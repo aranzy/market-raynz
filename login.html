@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg0  : #08090c;
+  --bg1  : #0e1014;
+  --bg2  : #13161c;
+  --bg3  : #1a1e27;
+  --bg4  : #222635;
+  --line : rgba(255,255,255,.07);
+  --line2: rgba(255,255,255,.12);
+  --t1   : #f0f1f5;
+  --t2   : #8b90a0;
+  --t3   : #565c72;
+  --em   : #4ade80;
+  --em2  : #22c55e;
+  --red  : #f87171;
+  --rad  : 10px;
+  --rad2 : 6px;
+  --mono : 'DM Mono', monospace;
+  --sans : 'Sora', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--bg0);
+  color: var(--t1);
+  min-height: 100dvh;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ── */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+  background: rgba(8,9,12,.85);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.logo { font-size: .95rem; font-weight: 700; letter-spacing: -.01em; color: var(--t1); text-decoration: none; }
+.logo span { color: var(--em); }
+.btn-back {
+  display: flex; align-items: center; gap: .4rem;
+  font-size: .75rem; color: var(--t2); text-decoration: none;
+  padding: .3rem .6rem; border-radius: var(--rad2);
+  border: 1px solid var(--line2); background: var(--bg3);
+  transition: color .15s, border-color .15s;
+}
+.btn-back:hover { color: var(--t1); border-color: var(--line2); }
+.btn-back svg { width: 13px; height: 13px; }
+
+/* ── Page wrap ── */
+.page-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem 4rem;
+}
+
+/* ── Card ── */
+.card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--bg2);
+  border: 1px solid var(--line2);
+  border-radius: var(--rad);
+  overflow: hidden;
+}
+.card-head {
+  padding: 1.5rem 1.5rem 0;
+  text-align: center;
+}
+.card-head .brand {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  margin-bottom: .2rem;
+}
+.card-head .brand span { color: var(--em); }
+.card-head .sub {
+  font-size: .75rem;
+  color: var(--t2);
+}
+
+/* ── Tabs ── */
+.tabs {
+  display: flex;
+  margin: 1.25rem 1.5rem 0;
+  background: var(--bg3);
+  border-radius: var(--rad2);
+  padding: 3px;
+  gap: 3px;
+}
+.tab-btn {
+  flex: 1;
+  padding: .45rem .5rem;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--t2);
+  font-family: var(--sans);
+  font-size: .75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.tab-btn.active {
+  background: var(--bg4);
+  color: var(--t1);
+}
+
+/* ── Form body ── */
+.card-body { padding: 1.25rem 1.5rem 1.5rem; }
+
+.f-group { margin-bottom: .9rem; }
+.f-label {
+  display: block;
+  font-size: .7rem;
+  font-weight: 600;
+  color: var(--t2);
+  margin-bottom: .4rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.f-inp {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--line2);
+  border-radius: var(--rad2);
+  padding: .6rem .75rem;
+  color: var(--t1);
+  font-family: var(--sans);
+  font-size: .82rem;
+  outline: none;
+  transition: border-color .15s;
+}
+.f-inp:focus { border-color: var(--em); }
+.f-inp::placeholder { color: var(--t3); }
+.f-inp:disabled { opacity: .5; cursor: not-allowed; }
+
+/* ── Error ── */
+.err-box {
+  background: rgba(248,113,113,.1);
+  border: 1px solid rgba(248,113,113,.25);
+  border-radius: var(--rad2);
+  padding: .5rem .75rem;
+  font-size: .75rem;
+  color: var(--red);
+  margin-bottom: .9rem;
+  display: none;
+}
+.err-box.show { display: block; }
+
+/* ── OK box ── */
+.ok-box {
+  background: rgba(74,222,128,.1);
+  border: 1px solid rgba(74,222,128,.25);
+  border-radius: var(--rad2);
+  padding: .5rem .75rem;
+  font-size: .75rem;
+  color: var(--em);
+  margin-bottom: .9rem;
+  display: none;
+}
+.ok-box.show { display: block; }
+
+/* ── Submit btn ── */
+.btn-submit {
+  width: 100%;
+  padding: .7rem;
+  background: var(--em);
+  color: #0a1a0a;
+  font-family: var(--sans);
+  font-size: .82rem;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--rad2);
+  cursor: pointer;
+  transition: background .15s, opacity .15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+}
+.btn-submit:hover { background: var(--em2); }
+.btn-submit:disabled { opacity: .5; cursor: not-allowed; }
+
+/* ── Divider ── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin: .9rem 0;
+  color: var(--t3);
+  font-size: .68rem;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+/* ── Spinner ── */
+.spin {
+  width: 14px; height: 14px;
+  border: 2px solid rgba(10,26,10,.3);
+  border-top-color: #0a1a0a;
+  border-radius: 50%;
+  animation: spin .6s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Footer note ── */
+.card-foot {
+  padding: 0 1.5rem 1.25rem;
+  text-align: center;
+  font-size: .68rem;
+  color: var(--t3);
+}
+.card-foot a { color: var(--t2); text-decoration: none; }
+.card-foot a:hover { color: var(--em); }
+
+/* ── Toast ── */
+#toastZone {
+  position: fixed;
+  bottom: 1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .4rem;
+  z-index: 999;
+  pointer-events: none;
+}
+.toast-item {
+  background: var(--bg4);
+  border: 1px solid var(--line2);
+  border-radius: 99px;
+  padding: .45rem 1rem;
+  font-size: .72rem;
+  color: var(--t2);
+  white-space: nowrap;
+  animation: toastIn .2s ease;
+}
+.toast-item.ok  { color: var(--em);  border-color: rgba(74,222,128,.3); }
+.toast-item.err { color: var(--red); border-color: rgba(248,113,113,.3); }
+@keyframes toastIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* ── Music Player ─────────────────────────────────── */
+#musicPlayer{
+  position:fixed;bottom:1.15rem;right:1.15rem;z-index:300;
+  display:none;flex-direction:column;align-items:flex-end;gap:.38rem;
+}
+#musicPanel{
+  background:var(--bg2);border:1px solid var(--line2);border-radius:4px;
+  box-shadow:0 6px 28px rgba(0,0,0,.6);
+  width:196px;padding:.65rem .8rem;
+  display:none;flex-direction:column;gap:.5rem;
+}
+#musicPanel.open{display:flex;animation:mpUp .16s ease;}
+@keyframes mpUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.mp-title{
+  font-size:.62rem;color:var(--t2);white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;letter-spacing:.02em;
+}
+.mp-controls{display:flex;align-items:center;justify-content:center;gap:.4rem;}
+.mp-nav{
+  width:28px;height:28px;border-radius:4px;border:1px solid var(--line2);
+  background:var(--bg3);color:var(--t3);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .15s;
+  flex-shrink:0;
+}
+.mp-nav:hover{border-color:var(--line3);color:var(--t1);}
+.mp-nav svg{width:12px;height:12px;display:block;}
+.mp-vol-row{display:flex;align-items:center;gap:.45rem;}
+.mp-vol-ico{color:var(--t3);flex-shrink:0;}
+.mp-vol-ico svg{width:12px;height:12px;display:block;}
+.mp-vol-sl{
+  flex:1;-webkit-appearance:none;appearance:none;
+  height:2px;border-radius:2px;background:var(--line2);
+  cursor:pointer;outline:none;
+}
+.mp-vol-sl::-webkit-slider-thumb{
+  -webkit-appearance:none;width:11px;height:11px;border-radius:50%;
+  background:var(--em);cursor:pointer;box-shadow:0 0 4px rgba(0,0,0,.4);
+}
+.mp-vol-sl::-moz-range-thumb{
+  width:11px;height:11px;border-radius:50%;border:none;
+  background:var(--em);cursor:pointer;
+}
+/* Equalizer bars (animated when playing) */
+.mp-eq{display:none;align-items:flex-end;gap:2px;height:15px;width:15px;justify-content:center;}
+.mp-eq span{
+  width:2px;background:var(--em);border-radius:1px;
+  animation:mpEq .75s ease-in-out infinite;
+}
+.mp-eq span:nth-child(1){animation-duration:.65s;}
+.mp-eq span:nth-child(2){animation-duration:.9s;animation-delay:.13s;}
+.mp-eq span:nth-child(3){animation-duration:.6s;animation-delay:.27s;}
+.mp-eq span:nth-child(4){animation-duration:.8s;animation-delay:.06s;}
+@keyframes mpEq{0%,100%{height:2px}50%{height:14px}}
+/* Main toggle button */
+#musicBtn{
+  width:38px;height:38px;min-height:unset!important;
+  border-radius:4px;background:var(--bg2);border:1px solid var(--line2);
+  color:var(--t3);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .18s;box-shadow:0 4px 16px rgba(0,0,0,.5);
+  overflow:hidden;position:relative;
+}
+#musicBtn:hover{border-color:var(--line3);color:var(--t1);background:var(--bg3);}
+#musicBtn.playing{border-color:rgba(var(--em-rgb),.38);color:var(--em);background:rgba(var(--em-rgb),.08);}
+#musicBtn .mp-ico svg{width:15px;height:15px;display:block;}
+#musicBtn.playing .mp-ico{display:none;}
+#musicBtn.playing .mp-eq{display:flex;}
+
+/* ── Music player ────────────────────────────────────────── */
+@media (max-width: 680px) {
+  #musicPlayer {
+    bottom: 1.15rem !important;
+    right: .85rem !important;
+  }
+  #musicBtn {
+    width: 42px !important;
+    height: 42px !important;
+    min-height: unset !important;
+    border-radius: 8px !important;
+  }
+  #musicPanel {
+    width: 200px !important;
+    border-radius: 8px !important;
+  }
+  .mp-nav {
+    width: 34px !important;
+    height: 34px !important;
+    min-height: unset !important;
+  }
+}
+
+/* ── Safe area (notch / home bar) ────────────────────────── */
+@media (max-width: 680px) {
+  #musicPlayer {
+    bottom: calc(1.15rem + env(safe-area-inset-bottom)) !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="/" class="logo">Kayz<span>Market</span></a>
+  <a id="btnBack" href="/" class="btn-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+    Kembali
+  </a>
+</header>
+
+<div class="page-wrap">
+  <div class="card">
+    <div class="card-head">
+      <div class="brand">Kayz<span>Market</span></div>
+      <div class="sub" id="cardSub">Masuk atau buat akun baru</div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" id="tabLogin" onclick="switchTab('login')">Masuk</button>
+      <button class="tab-btn" id="tabReg" onclick="switchTab('register')">Daftar</button>
+    </div>
+
+    <div class="card-body">
+
+      <!-- Error / OK -->
+      <div class="err-box" id="errBox"></div>
+      <div class="ok-box"  id="okBox"></div>
+
+      <!-- LOGIN form -->
+      <div id="formLogin">
+        <div class="f-group">
+          <label class="f-label" for="loginUser">Username</label>
+          <input class="f-inp" id="loginUser" type="text" placeholder="username..." maxlength="20"
+            autocomplete="username"
+            oninput="this.value=this.value.replace(/[^a-z0-9_]/gi,'').toLowerCase()"
+            onkeydown="if(event.key==='Enter')doLogin()">
+        </div>
+        <div class="f-group">
+          <label class="f-label" for="loginPass">Password</label>
+          <input class="f-inp" id="loginPass" type="password" placeholder="password..."
+            autocomplete="current-password"
+            onkeydown="if(event.key==='Enter')doLogin()">
+        </div>
+        <button class="btn-submit" id="btnLogin" onclick="doLogin()">
+          <span>Masuk</span>
+        </button>
+      </div>
+
+      <!-- REGISTER form -->
+      <div id="formReg" style="display:none">
+        <div class="f-group">
+          <label class="f-label" for="regUser">Username</label>
+          <input class="f-inp" id="regUser" type="text" placeholder="3–20 karakter..." maxlength="20"
+            autocomplete="username"
+            oninput="this.value=this.value.replace(/[^a-z0-9_]/gi,'').toLowerCase()"
+            onkeydown="if(event.key==='Enter')doRegister()">
+        </div>
+        <div class="f-group">
+          <label class="f-label" for="regPass">Password</label>
+          <input class="f-inp" id="regPass" type="password" placeholder="minimal 6 karakter..."
+            autocomplete="new-password"
+            onkeydown="if(event.key==='Enter')doRegister()">
+        </div>
+        <div class="f-group">
+          <label class="f-label" for="regEmail">Email <span style="color:var(--danger,#e53e3e);font-size:.65rem">*wajib</span></label>
+          <input class="f-inp" id="regEmail" type="email" placeholder="email@contoh.com..."
+            autocomplete="email"
+            onkeydown="if(event.key==='Enter')doRegister()">
+        </div>
+        <div class="f-group">
+          <label class="f-label" for="regWa">Nomor WhatsApp <span style="color:var(--danger,#e53e3e);font-size:.65rem">*wajib</span></label>
+          <input class="f-inp" id="regWa" type="tel" placeholder="08xxxxxxxxxx..." maxlength="16"
+            autocomplete="tel"
+            oninput="this.value=this.value.replace(/[^0-9+]/g,'')"
+            onkeydown="if(event.key==='Enter')doRegister()">
+        </div>
+        <button class="btn-submit" id="btnReg" onclick="doRegister()">
+          <span>Buat Akun</span>
+        </button>
+      </div>
+
+
+
+    <div class="card-foot">
+      Dengan masuk, kamu menyetujui <a href="/">syarat penggunaan</a> Kayz Market.
+    </div>
+  </div>
+</div>
+
+<div id="toastZone"></div>
+
+<script>
+'use strict';
+
+/* ── Helpers ── */
+var _tab = 'login';
+
+function q(id) { return document.getElementById(id); }
+
+function toast(msg, type) {
+  var el = document.createElement('div');
+  el.className = 'toast-item ' + (type || '');
+  el.textContent = msg;
+  q('toastZone').appendChild(el);
+  setTimeout(function() { el.remove(); }, 3200);
+}
+
+function showErr(msg) {
+  var box = q('errBox');
+  box.textContent = msg;
+  box.classList.add('show');
+  q('okBox').classList.remove('show');
+}
+function showOk(msg) {
+  var box = q('okBox');
+  box.textContent = msg;
+  box.classList.add('show');
+  q('errBox').classList.remove('show');
+}
+function clearMsg() {
+  q('errBox').classList.remove('show');
+  q('okBox').classList.remove('show');
+}
+
+function setBusy(btnId, busy) {
+  var btn = q(btnId);
+  if (!btn) return;
+  btn.disabled = busy;
+  if (busy) {
+    btn.innerHTML = '<span class="spin"></span>';
+  } else {
+    btn.innerHTML = _tab === 'login' ? '<span>Masuk</span>' : '<span>Buat Akun</span>';
+  }
+}
+
+/* ── Return URL ── */
+function getReturnUrl() {
+  var p = new URLSearchParams(location.search);
+  var r = p.get('returnUrl') || p.get('return') || '/';
+  // Hanya izinkan path relatif
+  if (r.startsWith('http://') || r.startsWith('https://') || r.startsWith('//')) return '/';
+  return r;
+}
+
+/* ── Save token & fetch apiKey lalu redirect ── */
+async function onLoginSuccess(token, username) {
+  localStorage.setItem('userToken', token);
+  localStorage.setItem('username', username);
+  // Langsung fetch apiKey pakai token baru, simpan ke localStorage
+  try {
+    var r = await fetch('/api/user/apikey', { headers: { 'x-user-token': token } });
+    var j = await r.json();
+    if (j.ok && j.apiKey) {
+      localStorage.setItem('userApiKey', j.apiKey);
+    }
+  } catch(e) {}
+  toast('Berhasil masuk!', 'ok');
+  setTimeout(function() {
+    window.location.href = getReturnUrl();
+  }, 500);
+}
+
+/* ── Tab switch ── */
+function switchTab(tab) {
+  _tab = tab;
+  clearMsg();
+  if (tab === 'login') {
+    q('tabLogin').classList.add('active');
+    q('tabReg').classList.remove('active');
+    q('formLogin').style.display = '';
+    q('formReg').style.display = 'none';
+    q('cardSub').textContent = 'Masuk ke akun kamu';
+    q('btnLogin').innerHTML = '<span>Masuk</span>';
+  } else {
+    q('tabReg').classList.add('active');
+    q('tabLogin').classList.remove('active');
+    q('formReg').style.display = '';
+    q('formLogin').style.display = 'none';
+    q('cardSub').textContent = 'Buat akun baru';
+    q('btnReg').innerHTML = '<span>Buat Akun</span>';
+  }
+}
+
+/* ── Login ── */
+async function doLogin() {
+  clearMsg();
+  var u = q('loginUser').value.trim();
+  var p = q('loginPass').value;
+  if (!u || !p) { showErr('Isi username dan password.'); return; }
+  setBusy('btnLogin', true);
+  try {
+    var r = await fetch('/api/user/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u, password: p })
+    });
+    var j = await r.json();
+    if (!j.ok) { showErr(j.message || 'Login gagal.'); setBusy('btnLogin', false); return; }
+    onLoginSuccess(j.token, j.username);
+  } catch(e) {
+    showErr('Koneksi error, coba lagi.');
+    setBusy('btnLogin', false);
+  }
+}
+
+/* ── Register ── */
+async function doRegister() {
+  clearMsg();
+  var u  = q('regUser').value.trim();
+  var p  = q('regPass').value;
+  var em = q('regEmail').value.trim();
+  var wa = q('regWa').value.trim();
+  if (!u || !p) { showErr('Isi username dan password.'); return; }
+  if (!em) { showErr('Email wajib diisi.'); q('regEmail').focus(); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { showErr('Format email tidak valid.'); q('regEmail').focus(); return; }
+  if (!wa) { showErr('Nomor WhatsApp wajib diisi.'); q('regWa').focus(); return; }
+  if (!/^[0-9+]{8,16}$/.test(wa)) { showErr('Nomor WhatsApp tidak valid (8–16 digit).'); q('regWa').focus(); return; }
+  setBusy('btnReg', true);
+  try {
+    var r = await fetch('/api/user/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u, password: p, email: em, whatsapp: wa })
+    });
+    var j = await r.json();
+    if (!j.ok) { showErr(j.message || 'Registrasi gagal.'); setBusy('btnReg', false); return; }
+    showOk('Akun berhasil dibuat! Silakan masuk.');
+    setBusy('btnReg', false);
+    // Auto-isi login form
+    q('loginUser').value = u;
+    q('loginPass').value = p;
+    setTimeout(function() { switchTab('login'); }, 800);
+  } catch(e) {
+    showErr('Koneksi error, coba lagi.');
+    setBusy('btnReg', false);
+  }
+}
+
+/* ── Init ── */
+(async function() {
+  // Set back button ke halaman asal (bukan hardcode /)
+  (function() {
+    var ret = getReturnUrl();
+    // Extract halaman asal dari returnUrl (tanpa query string deposit)
+    // Contoh: /pay?type=deposit&from=/otp → back ke /otp
+    var backTarget = '/';
+    try {
+      if (ret && ret !== '/') {
+        // Cek apakah returnUrl mengandung ?from= param
+        var fromMatch = ret.match(/[?&]from=([^&]+)/);
+        if (fromMatch) {
+          backTarget = decodeURIComponent(fromMatch[1]);
+        } else {
+          // Ambil path tanpa query string
+          backTarget = ret.split('?')[0] || '/';
+        }
+      }
+    } catch(e) {}
+    var btnBack = q('btnBack');
+    if (btnBack) btnBack.href = backTarget;
+  })();
+
+  // Cek sudah login — pakai me-soft (return 200, bukan 401) agar tidak ada redirect loop
+  var token = localStorage.getItem('userToken') || '';
+  if (token) {
+    try {
+      var r = await fetch('/api/user/me-soft', {
+        headers: { 'x-user-token': token }
+      });
+      var j = await r.json();
+      if (j.ok && j.data) {
+        // Sudah login, langsung redirect
+        window.location.replace(getReturnUrl());
+        return;
+      }
+    } catch(e) {}
+    // Token tidak valid, hapus
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('username');
+  }
+
+  // Cek ?tab param
+  var tp = new URLSearchParams(location.search).get('tab');
+  if (tp === 'register') switchTab('register');
+})();
+</script>
+<script>(function(){var v="?v="+Date.now();document.querySelectorAll("img[data-logo-img]").forEach(function(el){if(el.src&&el.src.indexOf("/media/logo")>-1)el.src=el.src.split("?")[0]+v;});var fav=document.querySelector("link[rel=icon]");if(fav&&fav.href&&fav.href.indexOf("/media/logo")>-1)fav.href=fav.href.split("?")[0]+v;})();
+function applyGlobalBg(s) {
+  var old = document.getElementById('_gbg'); if (old) old.remove();
+  var oldStyle = document.getElementById('_gbg_style'); if (oldStyle) oldStyle.remove();
+  if (!s || !s.bgUrl) return;
+  var op = s.bgOpacity != null ? parseFloat(s.bgOpacity) : 0.15;
+  var el = document.createElement('div');
+  el.id = '_gbg';
+  el.setAttribute('aria-hidden','true');
+  el.style.cssText = 'position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;will-change:transform;transform:translateZ(0)';
+  if (s.bgType === 'video') {
+    var v = document.createElement('video');
+    v.src = s.bgUrl; v.autoplay = true; v.loop = true; v.muted = true; v.playsInline = true;
+    v.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:'+op+';transform:translateZ(0)';
+    el.appendChild(v);
+  } else {
+    var img = document.createElement('div');
+    img.style.cssText = 'position:absolute;inset:0;background-image:url('+JSON.stringify(s.bgUrl)+');background-size:cover;background-position:center;opacity:'+op+';transform:translateZ(0)';
+    el.appendChild(img);
+  }
+  document.body.insertBefore(el, document.body.firstChild);
+  // Override body background agar tidak menutupi _gbg
+  var st = document.createElement('style');
+  st.id = '_gbg_style';
+  st.textContent = 'html{background:var(--bg0,var(--bg,#0e0e0e))!important}body{background-color:transparent!important;background-image:none!important;}';
+  document.head.appendChild(st);
+}
+
+/* ── Load background from settings ── */
+fetch('/api/products').then(function(r){return r.json();}).then(function(j){
+  if(j.settings) { applyGlobalBg(j.settings); applyMusicSettings(j.settings); }
+}).catch(function(){});
+
+(function connectStoreSSE() {
+  try {
+    var src = new EventSource('/api/store/stream');
+    src.onmessage = function(e) {
+      try {
+        var d = JSON.parse(e.data);
+        if (d.type === 'settings_update' && d.settings) { applyGlobalBg(d.settings); applyMusicSettings(d.settings); }
+      } catch(ex) {}
+    };
+    src.onerror = function() { src.close(); setTimeout(connectStoreSSE, 5000); };
+  } catch(ex) {}
+})();
+
+
+var _music = {
+  playlist: [],
+  idx: 0,
+  muted: false,
+  vol: 0.35,
+  ready: false,
+  panelOpen: false,
+  fadeTimer: null,
+  endBound: false,
+  gesturePending: false
+};
+
+function initMusic() {
+  try {
+    _music.muted = localStorage.getItem('musicMuted') === '1';
+    var sv = parseFloat(localStorage.getItem('musicVol'));
+    if (!isNaN(sv) && sv >= 0 && sv <= 1) _music.vol = sv;
+    var si = parseInt(localStorage.getItem('musicIdx'), 10);
+    if (!isNaN(si) && si >= 0) _music.idx = si;
+  } catch(e){}
+  var volEl = document.getElementById('mpVol');
+  if (volEl) volEl.value = Math.round(_music.vol * 100);
+}
+
+function applyMusicSettings(settings) {
+  var player = document.getElementById('musicPlayer');
+  var audio  = document.getElementById('bgMusic');
+  if (!settings || !settings.musicUrl || !settings.musicEnabled) {
+    if (player) player.style.display = 'none';
+    return;
+  }
+  // Set atribut mobile penting via JS (backup selain atribut HTML)
+  audio.playsInline = true;
+  audio.setAttribute('playsinline', '');
+  audio.setAttribute('webkit-playsinline', '');
+  var urls = settings.musicUrl.split(',')
+    .map(function(u){ return u.trim(); })
+    .filter(Boolean)
+    .map(function(u){
+      return /^https?:\/\//i.test(u) ? u : location.origin + u;
+    });
+  if (!urls.length) { if (player) player.style.display = 'none'; return; }
+
+  _music.playlist = urls;
+  _music.idx = Math.min(_music.idx, urls.length - 1);
+  _music.ready = true;
+  // Loop hanya aktif jika single track (multi-track dihandle via 'ended' event)
+  audio.loop = (urls.length === 1);
+
+  var prevBtn = document.getElementById('mpPrev');
+  var nextBtn = document.getElementById('mpNext');
+  if (prevBtn) prevBtn.style.display = urls.length > 1 ? '' : 'none';
+  if (nextBtn) nextBtn.style.display = urls.length > 1 ? '' : 'none';
+
+  if (player) player.style.display = 'flex';
+
+  _musicLoad(_music.idx, false);
+  _musicUpdateBtn();
+  _musicUpdateTitle();
+
+  if (!_music.endBound) {
+    _music.endBound = true;
+    audio.addEventListener('ended', function() {
+      if (_music.playlist.length > 1) {
+        _music.idx = (_music.idx + 1) % _music.playlist.length;
+        try { localStorage.setItem('musicIdx', _music.idx); } catch(e){}
+        _musicLoad(_music.idx, true);
+        _musicUpdateTitle();
+      } else {
+        audio.currentTime = 0;
+        if (!_music.muted) audio.play().catch(function(){});
+      }
+    });
+  }
+
+  if (!_music.muted) _musicFadeIn();
+}
+
+function _musicLoad(idx, autoPlay) {
+  var audio = document.getElementById('bgMusic');
+  var url = _music.playlist[idx];
+  // Atribut penting untuk iOS agar audio bisa diputar inline
+  audio.playsInline = true;
+  if (audio.src !== url) { audio.src = url; audio.load(); }
+  audio.volume = _music.muted ? 0 : _music.vol;
+  if (autoPlay && !_music.muted) _musicFadeIn();
+}
+
+function _musicFadeIn() {
+  var audio = document.getElementById('bgMusic');
+  if (!audio || !audio.src) return;
+  clearInterval(_music.fadeTimer);
+  audio.playsInline = true;
+  audio.setAttribute('playsinline', '');
+  // Langsung set volume target — tidak fade via setInterval karena di mobile
+  // interval callback BUKAN bagian dari user gesture, sehingga play() di dalamnya diblokir
+  audio.volume = _music.vol;
+  var p = audio.play();
+  if (p && p.catch) p.catch(function(e){
+    console.warn('[music] Autoplay blocked:', e && e.name);
+    _musicWaitForGesture();
+  });
+}
+
+// Daftarkan satu kali listener gesture (touchstart / click) untuk resume di HP
+function _musicWaitForGesture() {
+  if (_music.gesturePending) return;
+  _music.gesturePending = true;
+  function onGesture() {
+    _music.gesturePending = false;
+    document.removeEventListener('touchstart', onGesture, true);
+    document.removeEventListener('click', onGesture, true);
+    if (!_music.muted && _music.ready) {
+      var audio = document.getElementById('bgMusic');
+      if (audio && audio.paused) _musicFadeIn();
+    }
+  }
+  document.addEventListener('touchstart', onGesture, { capture: true, once: true, passive: true });
+  document.addEventListener('click', onGesture, { capture: true, once: true });
+}
+
+function _musicFadeOut(cb) {
+  var audio = document.getElementById('bgMusic');
+  if (!audio) { if (cb) cb(); return; }
+  clearInterval(_music.fadeTimer);
+  _music.fadeTimer = setInterval(function() {
+    if (audio.volume > 0.03) { audio.volume = Math.max(0, audio.volume - 0.04); }
+    else { audio.volume = 0; audio.pause(); clearInterval(_music.fadeTimer); if (cb) cb(); }
+  }, 35);
+}
+
+function toggleMusicPanel() {
+  if (!_music.ready) { toggleMusic(); return; }
+  var audio = document.getElementById('bgMusic');
+  // KUNCI MOBILE: audio.play() harus dipanggil langsung dalam gesture handler (tap/click).
+  // Kalau dipanggil lewat setTimeout atau nested function, browser mobile BLOKIR.
+  // Jadi kita play() dulu synchronous di sini, baru urus panel setelahnya.
+  if (audio && !_music.muted) {
+    // Set semua atribut mobile sebelum play
+    audio.playsInline = true;
+    audio.setAttribute('playsinline', '');
+    audio.setAttribute('webkit-playsinline', '');
+    if (audio.paused) {
+      // Pastikan src sudah ada
+      if (!audio.src && _music.playlist && _music.playlist.length) {
+        audio.src = _music.playlist[_music.idx] || _music.playlist[0];
+        audio.load();
+      }
+      audio.volume = _music.vol;
+      audio.play().catch(function(e){ console.warn('[music] play blocked:', e && e.name); });
+    }
+  }
+  _music.panelOpen = !_music.panelOpen;
+  var panel = document.getElementById('musicPanel');
+  if (!panel) return;
+  if (_music.panelOpen) panel.classList.add('open');
+  else panel.classList.remove('open');
+  _musicUpdateBtn();
+}
+
+function toggleMusic() {
+  if (!_music.ready) return;
+  _music.muted = !_music.muted;
+  try { localStorage.setItem('musicMuted', _music.muted ? '1' : '0'); } catch(e){}
+  if (_music.muted) {
+    _musicFadeOut();
+  } else {
+    // Play langsung synchronous dalam gesture untuk mobile
+    var audio = document.getElementById('bgMusic');
+    if (audio) {
+      audio.playsInline = true;
+      audio.setAttribute('playsinline', '');
+      if (!audio.src && _music.playlist && _music.playlist.length) {
+        audio.src = _music.playlist[_music.idx] || _music.playlist[0];
+        audio.load();
+      }
+      audio.volume = _music.vol;
+      audio.play().catch(function(e){ console.warn('[music] play blocked:', e && e.name); });
+    }
+  }
+  _musicUpdateBtn();
+}
+
+function musicNext() {
+  if (!_music.playlist.length) return;
+  var wasMuted = _music.muted;
+  _musicFadeOut(function() {
+    _music.idx = (_music.idx + 1) % _music.playlist.length;
+    try { localStorage.setItem('musicIdx', _music.idx); } catch(e){}
+    _musicLoad(_music.idx, false);
+    _musicUpdateTitle();
+    if (!wasMuted) _musicFadeIn();
+  });
+}
+
+function musicPrev() {
+  if (!_music.playlist.length) return;
+  var wasMuted = _music.muted;
+  _musicFadeOut(function() {
+    _music.idx = (_music.idx - 1 + _music.playlist.length) % _music.playlist.length;
+    try { localStorage.setItem('musicIdx', _music.idx); } catch(e){}
+    _musicLoad(_music.idx, false);
+    _musicUpdateTitle();
+    if (!wasMuted) _musicFadeIn();
+  });
+}
+
+function musicSetVol(val) {
+  _music.vol = val / 100;
+  try { localStorage.setItem('musicVol', String(_music.vol)); } catch(e){}
+  var audio = document.getElementById('bgMusic');
+  if (audio && !_music.muted) audio.volume = _music.vol;
+}
+
+function _musicUpdateBtn() {
+  var btn = document.getElementById('musicBtn');
+  if (!btn) return;
+  if (_music.muted) btn.classList.remove('playing'); else btn.classList.add('playing');
+  var pp = document.getElementById('mpPlayPause');
+  if (pp) {
+    if (_music.muted) {
+      pp.title = 'Play';
+      pp.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+    } else {
+      pp.title = 'Pause';
+      pp.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="4" x2="6" y2="20"/><line x1="18" y1="4" x2="18" y2="20"/></svg>';
+    }
+  }
+}
+
+function _musicUpdateTitle() {
+  var el = document.getElementById('mpTitle');
+  if (!el || !_music.playlist.length) return;
+  var url = _music.playlist[_music.idx];
+  var raw = url.split('?')[0].split('/').pop();
+  var name = decodeURIComponent(raw).replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ') || ('Track ' + (_music.idx + 1));
+  var num = _music.playlist.length > 1 ? (_music.idx + 1) + '/' + _music.playlist.length + ' · ' : '';
+  el.textContent = '♪ ' + num + name;
+  el.title = name;
+}
+
+document.addEventListener('click', function(e) {
+  if (!_music.panelOpen) return;
+  var player = document.getElementById('musicPlayer');
+  if (player && !player.contains(e.target)) {
+    _music.panelOpen = false;
+    var panel = document.getElementById('musicPanel');
+    if (panel) panel.classList.remove('open');
+  }
+});
+</script>
+
+<div id="musicPlayer">
+  <div id="musicPanel">
+    <div class="mp-title" id="mpTitle">&#9834; Musik</div>
+    <div class="mp-controls">
+      <button class="mp-nav" id="mpPrev" title="Sebelumnya" onclick="musicPrev()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="4" x2="5" y2="20"/></svg>
+      </button>
+      <button class="mp-nav" id="mpPlayPause" title="Pause" onclick="toggleMusic()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="4" x2="6" y2="20"/><line x1="18" y1="4" x2="18" y2="20"/></svg>
+      </button>
+      <button class="mp-nav" id="mpNext" title="Berikutnya" onclick="musicNext()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="4" x2="19" y2="20"/></svg>
+      </button>
+    </div>
+    <div class="mp-vol-row">
+      <span class="mp-vol-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
+      <input type="range" class="mp-vol-sl" id="mpVol" min="0" max="100" value="35" oninput="musicSetVol(this.value)">
+    </div>
+  </div>
+  <button id="musicBtn" title="Musik" onclick="toggleMusicPanel()">
+    <span class="mp-ico">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+    </span>
+    <span class="mp-eq"><span></span><span></span><span></span><span></span></span>
+  </button>
+</div>
+<audio id="bgMusic" loop preload="none" playsinline webkit-playsinline x-webkit-airplay="allow"></audio>
+</body>
+</html>
