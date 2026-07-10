@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/jpeg" href="/media/logo.jpg">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+<meta name="theme-color" content="#181818">
+<title>Top Up — Kayz Market</title>
+<meta name="description" content="Top Up game favoritmu — bayar QRIS, proses otomatis & instan.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#181818;--bg1:#1a1a1a;--bg2:#212121;--bg3:#2a2a2a;
+  --line:#2E2E2E;--line2:#3a3a3a;--line3:#484848;
+  --em:#34d399;--em2:#6ee7b7;--em-rgb:52,211,153;
+  --red:#f87171;--red-rgb:248,113,113;
+  --yel:#fbbf24;--yel-rgb:251,191,36;
+  --t1:#e5e5e5;--t2:#a0a0a0;--t3:#616161;--t4:rgba(255,255,255,.07);
+  --mono:'Ubuntu Mono',monospace;--font:'DM Sans',system-ui,sans-serif;
+  --rad:4px;--trans:.16s ease;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);background:var(--bg);color:var(--t1);
+  min-height:100vh;overflow-x:hidden;font-size:13.5px;line-height:1.5;
+  background-color:#181818;
+  background-image:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);
+  background-size:50px 50px;position:relative;
+}
+body::before{
+  content:'';position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);
+  width:800px;height:600px;
+  background:radial-gradient(ellipse,rgba(255,255,255,.028) 0%,transparent 65%);
+  filter:blur(80px);pointer-events:none;z-index:0;
+}
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.018),transparent 55%),radial-gradient(ellipse at 100% 100%,rgba(255,255,255,.01),transparent 50%);
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:2px}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(24,24,24,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  max-width:1180px;margin:0 auto;padding:0 1.25rem;
+  height:46px;display:flex;align-items:center;justify-content:space-between;gap:1rem;
+}
+.logo{
+  display:flex;align-items:center;gap:9px;
+  font-size:.9rem;font-weight:700;letter-spacing:-.02em;color:var(--t1);
+  text-decoration:none;flex-shrink:0;cursor:pointer;
+}
+.logo-gem{
+  width:26px;height:26px;border-radius:4px;
+  background:linear-gradient(135deg,#1a2e25,#0d1f18);
+  border:1px solid rgba(var(--em-rgb),.35);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 12px rgba(var(--em-rgb),.2);
+}
+.logo-gem svg{width:13px;height:13px}
+.nav-r{display:flex;align-items:center;gap:.4rem}
+.n-btn{
+  font-family:var(--font);font-size:.7rem;font-weight:600;
+  padding:.3rem .75rem;border-radius:4px;
+  border:1px solid var(--line2);background:var(--bg2);
+  color:var(--t2);cursor:pointer;transition:all var(--trans);text-decoration:none;
+  display:flex;align-items:center;gap:.3rem;height:32px;min-height:unset;
+}
+.n-btn:hover{border-color:var(--line3);color:var(--t1)}
+.n-btn.em{border-color:#047857;color:#fff;background:#047857}
+.n-btn.em:hover{background:#059669;border-color:#059669}
+
+/* ── PAGES ── */
+.page{display:none;position:relative;z-index:1}
+.page.active{display:block;animation:_pageIn .3s ease both}
+@keyframes _pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── BANNER SLIDER ── */
+.banner-wrap{
+  position:relative;overflow:hidden;
+  height:clamp(160px,28vw,320px);
+  border-bottom:1px solid var(--line);
+}
+.banner-slides{display:flex;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.bslide{
+  min-width:100%;height:100%;position:relative;
+  display:flex;align-items:center;padding:0 clamp(1.25rem,7vw,5rem);
+  overflow:hidden;
+}
+.bslide:nth-child(1){background:linear-gradient(135deg,#1e2420 0%,#202a22 55%,#0c0c0e 100%)}
+.bslide:nth-child(2){background:linear-gradient(135deg,#221e26 0%,#261e2c 55%,#0c0c0e 100%)}
+.bslide:nth-child(3){background:linear-gradient(135deg,#221f16 0%,#252018 55%,#0c0c0e 100%)}
+.bslide::before{
+  content:'';position:absolute;right:-60px;top:-80px;
+  width:min(400px,80%);height:min(400px,80%);border-radius:50%;
+  pointer-events:none;
+}
+.bslide:nth-child(1)::before{background:radial-gradient(ellipse,rgba(var(--em-rgb),.09),transparent 70%)}
+.bslide:nth-child(2)::before{background:radial-gradient(ellipse,rgba(167,139,250,.09),transparent 70%)}
+.bslide:nth-child(3)::before{background:radial-gradient(ellipse,rgba(var(--yel-rgb),.07),transparent 70%)}
+.bslide-body{position:relative;z-index:1;max-width:500px}
+.bslide-tag{
+  font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--em);margin-bottom:.45rem;
+  display:flex;align-items:center;gap:.4rem;
+}
+.bslide-tag::before{content:'';display:inline-block;width:18px;height:1px;background:var(--em)}
+.bslide:nth-child(2) .bslide-tag{color:#a78bfa}
+.bslide:nth-child(2) .bslide-tag::before{background:#a78bfa}
+.bslide:nth-child(3) .bslide-tag{color:var(--yel)}
+.bslide:nth-child(3) .bslide-tag::before{background:var(--yel)}
+.bslide h2{
+  font-size:clamp(1.1rem,3.2vw,2.1rem);font-weight:400;line-height:1.15;
+  letter-spacing:-.02em;margin-bottom:.4rem;color:var(--t1);
+  text-shadow:0 2px 20px rgba(0,0,0,.95);
+}
+.bslide h2 strong{font-weight:800}
+.bslide p{
+  font-size:.72rem;color:var(--t2);line-height:1.6;max-width:320px;margin-bottom:.9rem;
+  text-shadow:0 1px 12px rgba(0,0,0,.8);
+}
+.bslide-btn{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-family:var(--font);font-size:.7rem;font-weight:600;
+  padding:.5rem 1.1rem;border-radius:4px;
+  border:1px solid var(--line3);background:rgba(255,255,255,.06);
+  color:var(--t1);cursor:pointer;transition:all .2s;backdrop-filter:blur(8px);text-decoration:none;
+}
+.bslide-btn:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25)}
+.bl-arr{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+  width:30px;height:30px;border-radius:50%;
+  background:rgba(14,14,14,.7);border:1px solid var(--line2);
+  color:var(--t2);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .18s;backdrop-filter:blur(8px);min-height:unset;
+}
+.bl-arr:hover{border-color:var(--line3);color:var(--t1)}
+.bl-arr svg{width:11px;height:11px}
+.bl-prev{left:.75rem}.bl-next{right:.75rem}
+.bl-dots{
+  position:absolute;bottom:.75rem;left:50%;transform:translateX(-50%);
+  display:flex;gap:.3rem;z-index:2;
+}
+.bl-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:rgba(255,255,255,.22);cursor:pointer;transition:all .25s;
+}
+.bl-dot.on{background:var(--em);width:16px;border-radius:3px}
+
+/* ── TICKER ── */
+.ticker{
+  background:var(--bg1);border-bottom:1px solid var(--line);
+  padding:.5rem 1.25rem;overflow:hidden;display:flex;gap:2rem;
+}
+.ticker-items{display:flex;gap:2rem;animation:tickerMove 22s linear infinite;flex-shrink:0}
+@keyframes tickerMove{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.tick-item{
+  display:flex;align-items:center;gap:.4rem;flex-shrink:0;
+  font-size:.62rem;font-weight:600;color:var(--t3);white-space:nowrap;
+}
+.tick-dot{width:4px;height:4px;border-radius:50%;background:var(--em);opacity:.7}
+
+/* ── MAIN ── */
+.main{max-width:1180px;margin:0 auto;padding:1.25rem 1rem 5rem;position:relative;z-index:1}
+
+/* ── CATS / FILTER ── */
+.filter-row{
+  display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem;
+}
+.search-box{
+  display:flex;align-items:center;gap:.5rem;
+  background:var(--bg2);border:1px solid var(--line2);border-radius:4px;
+  padding:0 .75rem;flex:1;min-width:160px;max-width:260px;height:34px;
+  transition:border-color var(--trans);
+}
+.search-box:focus-within{border-color:rgba(var(--em-rgb),.4)}
+.search-box svg{width:13px;height:13px;color:var(--t3);flex-shrink:0}
+.search-box input{
+  flex:1;background:none;border:none;outline:none;
+  font-family:var(--font);font-size:.74rem;color:var(--t1);
+}
+.search-box input::placeholder{color:var(--t3)}
+.cats{display:flex;gap:.3rem;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cat{
+  flex-shrink:0;font-family:var(--font);font-size:.66rem;font-weight:600;
+  padding:.35rem .8rem;border-radius:4px;
+  border:1px solid var(--line);background:transparent;color:var(--t3);
+  cursor:pointer;transition:all var(--trans);white-space:nowrap;min-height:unset;height:32px;
+}
+.cat:hover{border-color:var(--line2);color:var(--t2)}
+.cat.on{border-color:rgba(var(--em-rgb),.4);background:rgba(var(--em-rgb),.08);color:var(--em)}
+
+/* ── SECTION LABEL ── */
+.sec-label{
+  font-size:.58rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--t3);margin-bottom:.75rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--line)}
+
+/* ── PRODUCT GRID — 1:1 Play Store style ── */
+.prod-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:.65rem;
+}
+.prod-card{
+  background:var(--bg1);border:1px solid var(--line);
+  border-radius:8px;overflow:hidden;cursor:pointer;
+  transition:border-color .22s,transform .22s,box-shadow .22s;
+  animation:_cardIn .35s cubic-bezier(.22,1,.36,1) both;
+  position:relative;
+}
+.prod-card:hover{
+  border-color:rgba(var(--em-rgb),.35);
+  transform:translateY(-3px);
+  box-shadow:0 12px 32px rgba(0,0,0,.55),0 0 0 1px rgba(var(--em-rgb),.08);
+}
+.prod-card:hover .prod-thumb-inner{transform:scale(1.05)}
+.prod-card.inactive{opacity:.45;pointer-events:none;filter:grayscale(.7)}
+@keyframes _cardIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+
+/* SQUARE THUMBNAIL 1:1 */
+.prod-thumb{
+  aspect-ratio:1/1;overflow:hidden;background:var(--bg2);
+  display:flex;align-items:center;justify-content:center;position:relative;
+}
+.prod-thumb-inner{
+  position:absolute;inset:0;transition:transform .4s ease;
+  display:flex;align-items:center;justify-content:center;
+}
+.prod-thumb-inner img{width:100%;height:100%;object-fit:cover}
+.prod-thumb-placeholder{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:clamp(1.8rem,6vw,2.8rem);font-weight:800;letter-spacing:-.05em;
+  font-family:var(--font);color:rgba(255,255,255,.75);
+  text-shadow:0 2px 16px rgba(0,0,0,.8);
+}
+.prod-thumb::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 50%,rgba(12,12,14,.75) 100%);
+  pointer-events:none;z-index:1;
+}
+.prod-badge{
+  position:absolute;top:.4rem;right:.4rem;z-index:2;
+  font-size:.5rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:.12rem .4rem;border-radius:3px;
+  background:rgba(12,12,14,.78);border:1px solid var(--line2);
+  color:var(--t3);backdrop-filter:blur(8px);
+}
+.prod-badge.off{color:var(--red);border-color:rgba(var(--red-rgb),.3);background:rgba(12,12,14,.85)}
+.prod-body{padding:.55rem .65rem .7rem}
+.prod-name{
+  font-size:.76rem;font-weight:700;color:var(--t1);
+  margin-bottom:.12rem;letter-spacing:-.01em;line-height:1.25;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.prod-code{font-size:.58rem;color:var(--t3);font-family:var(--mono)}
+.prod-from{
+  font-size:.6rem;color:var(--t3);margin-top:.3rem;
+  display:flex;align-items:center;gap:.3rem;
+}
+.prod-from b{color:var(--t2);font-weight:700}
+
+/* ── SKELETON ── */
+.skel{
+  border-radius:8px;
+  background:linear-gradient(90deg,var(--bg1) 25%,var(--bg2) 50%,var(--bg1) 75%);
+  background-size:300%;animation:sk 1.4s linear infinite;
+  border:1px solid var(--line);
+}
+@keyframes sk{0%{background-position:200%}100%{background-position:-100%}}
+.skel-thumb{aspect-ratio:1/1}
+.skel-body{height:56px;margin-top:2px;border-radius:0 0 8px 8px}
+.empty-grid{grid-column:1/-1;text-align:center;color:var(--t3);padding:3.5rem 0;font-size:.76rem}
+
+/* ── BACK BTN ── */
+.back-btn{
+  display:inline-flex;align-items:center;gap:.45rem;
+  font-size:.74rem;font-weight:600;color:var(--t3);
+  cursor:pointer;padding:.5rem 0;border:none;background:none;
+  font-family:var(--font);transition:color var(--trans);min-height:unset;
+}
+.back-btn:hover{color:var(--em)}
+.back-btn svg{width:14px;height:14px}
+
+/* ── TOPUP LAYOUT ── */
+.tp-wrap{max-width:1100px;margin:0 auto;padding:1rem 1rem 5rem}
+.tp-layout{
+  display:grid;grid-template-columns:1fr 320px;gap:1.25rem;align-items:start;
+}
+.tp-card{
+  background:var(--bg1);border:1px solid var(--line);border-radius:8px;overflow:hidden;
+}
+.tp-head{
+  background:linear-gradient(135deg,rgba(var(--em-rgb),.07),rgba(var(--em-rgb),.03));
+  border-bottom:1px solid var(--line);
+  padding:1rem 1.25rem;
+  display:flex;align-items:center;gap:.85rem;
+}
+.tp-prod-thumb{
+  width:54px;height:54px;border-radius:6px;overflow:hidden;flex-shrink:0;
+  background:var(--bg2);border:1px solid var(--line2);
+  display:flex;align-items:center;justify-content:center;
+}
+.tp-prod-thumb img{width:100%;height:100%;object-fit:cover}
+.tp-prod-thumb .tp-initial{
+  font-size:1.4rem;font-weight:800;color:rgba(var(--em-rgb),.6);font-family:var(--font);
+}
+.tp-prod-name{font-size:.92rem;font-weight:700;color:var(--t1);letter-spacing:-.02em;line-height:1.3}
+.tp-prod-code{font-size:.62rem;color:var(--t3);font-family:var(--mono);margin-top:.15rem}
+.tp-sec{padding:1rem 1.25rem;border-bottom:1px solid var(--line)}
+.tp-sec:last-child{border-bottom:none}
+.tp-sec-lbl{
+  font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--t3);margin-bottom:.85rem;
+  display:flex;align-items:center;gap:.45rem;
+}
+.tp-sec-lbl::after{content:'';flex:1;height:1px;background:var(--line)}
+.tp-sec-num{
+  width:18px;height:18px;border-radius:50%;background:rgba(var(--em-rgb),.12);
+  border:1px solid rgba(var(--em-rgb),.2);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:.58rem;font-weight:700;color:var(--em);flex-shrink:0;
+}
+
+/* INPUTS */
+.inp-group{margin-bottom:.75rem}
+.inp-group:last-child{margin-bottom:0}
+.inp-label{font-size:.72rem;font-weight:600;color:var(--t2);margin-bottom:.35rem;display:block}
+.inp-hint{font-size:.62rem;color:var(--t3);margin-top:.25rem}
+.f-inp{
+  width:100%;height:38px;padding:0 .75rem;
+  border:1px solid var(--line2);border-radius:4px;
+  background:var(--bg2);color:var(--t1);
+  font-family:var(--font);font-size:.82rem;outline:none;
+  transition:border-color var(--trans),box-shadow var(--trans);
+}
+.f-inp:focus{border-color:rgba(var(--em-rgb),.4);background:var(--bg3);box-shadow:0 0 0 3px rgba(var(--em-rgb),.07)}
+.f-inp::placeholder{color:var(--t3)}
+.f-sel{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23616161' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .75rem center;padding-right:2rem;cursor:pointer}
+.f-sel option{background:#212121;color:var(--t1)}
+
+/* VARIANTS */
+.var-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.5rem}
+.var-item{
+  border:1px solid var(--line2);border-radius:6px;padding:.65rem .55rem;
+  cursor:pointer;transition:all .15s;text-align:center;background:var(--bg2);
+  position:relative;
+}
+.var-item:hover{border-color:rgba(var(--em-rgb),.35);background:rgba(var(--em-rgb),.05)}
+.var-item.selected{
+  border-color:rgba(var(--em-rgb),.5);background:rgba(var(--em-rgb),.08);
+  box-shadow:0 0 0 2px rgba(var(--em-rgb),.12);
+}
+.var-item.selected::after{
+  content:'✓';position:absolute;top:.25rem;right:.35rem;
+  font-size:.55rem;font-weight:700;color:var(--em);
+}
+.var-name{font-size:.72rem;font-weight:600;color:var(--t1);line-height:1.3;margin-bottom:.35rem}
+.var-price{font-size:.78rem;font-weight:700;color:var(--em);font-family:var(--mono)}
+
+/* ── SUMMARY CARD ── */
+.sum-card{
+  background:var(--bg1);border:1px solid var(--line);border-radius:8px;overflow:hidden;
+  position:sticky;top:62px;
+}
+.sum-head{padding:.85rem 1rem;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.55rem}
+.sum-head-title{font-size:.78rem;font-weight:700;color:var(--t1)}
+.sum-body{padding:.85rem 1rem}
+.sum-ph{text-align:center;padding:1.25rem .75rem;color:var(--t3);font-size:.74rem;line-height:1.65}
+.sum-ph svg{display:block;margin:0 auto .65rem;opacity:.3}
+.sum-row{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem;
+  padding:.55rem 0;border-bottom:1px solid var(--line);font-size:.76rem;
+}
+.sum-row:last-child{border-bottom:none}
+.sum-lbl{color:var(--t3);flex-shrink:0}
+.sum-val{font-weight:600;text-align:right;word-break:break-all;color:var(--t2)}
+.sum-total{
+  background:rgba(var(--em-rgb),.07);border:1px solid rgba(var(--em-rgb),.15);
+  border-radius:6px;padding:.75rem .85rem;margin-top:.85rem;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.sum-total-lbl{font-size:.78rem;font-weight:700;color:var(--t2)}
+.sum-total-val{font-family:var(--mono);font-size:1.05rem;font-weight:700;color:var(--em)}
+.btn-checkout{
+  width:100%;margin-top:.85rem;height:44px;
+  background:#047857;color:#fff;border:none;border-radius:4px;
+  font-family:var(--font);font-size:.82rem;font-weight:700;cursor:pointer;
+  transition:all var(--trans);display:flex;align-items:center;justify-content:center;gap:.5rem;
+}
+.btn-checkout:hover:not(:disabled){background:#059669;box-shadow:0 4px 18px rgba(var(--em-rgb),.2)}
+.btn-checkout:disabled{background:var(--bg3);color:var(--t3);cursor:not-allowed}
+.qris-badge{
+  margin-top:.7rem;padding:.65rem .85rem;
+  background:var(--bg2);border:1px solid var(--line);border-radius:6px;
+  display:flex;align-items:center;gap:.65rem;
+}
+.qris-badge-ico{
+  width:32px;height:32px;border-radius:4px;background:rgba(var(--em-rgb),.08);
+  border:1px solid rgba(var(--em-rgb),.2);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.qris-badge-ico svg{width:14px;height:14px}
+.qris-badge-text p{font-size:.66rem;font-weight:700;color:var(--t2)}
+.qris-badge-text span{font-size:.58rem;color:var(--t3)}
+
+/* ── PAYMENT PAGE ── */
+.pay-wrap{max-width:420px;margin:0 auto;padding:0 1rem 5rem;position:relative;z-index:1}
+.pay-card{background:var(--bg1);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.pay-head{
+  padding:.9rem 1.1rem;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:.75rem;
+}
+.pay-st-ico{
+  width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.pay-st-ico.waiting{background:rgba(var(--yel-rgb),.12);border:1px solid rgba(var(--yel-rgb),.2)}
+.pay-st-ico.success{background:rgba(var(--em-rgb),.12);border:1px solid rgba(var(--em-rgb),.2)}
+.pay-st-ico.failed{background:rgba(var(--red-rgb),.12);border:1px solid rgba(var(--red-rgb),.2)}
+.pay-st-ico.expired{background:var(--bg2);border:1px solid var(--line)}
+.pay-st-ico.processing{background:rgba(var(--em-rgb),.08);border:1px solid rgba(var(--em-rgb),.15)}
+.pay-st-title{font-size:.84rem;font-weight:700;color:var(--t1)}
+.pay-st-sub{font-size:.66rem;color:var(--t3);margin-top:.1rem}
+.pay-body{padding:1rem 1.1rem}
+
+/* QR BOX */
+.qr-box{
+  background:var(--bg2);border:1px solid var(--line2);border-radius:8px;
+  padding:1.25rem 1rem;text-align:center;margin-bottom:.85rem;
+}
+.qr-label{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:var(--bg3);border:1px solid var(--line2);border-radius:20px;
+  padding:.3rem .85rem;font-size:.6rem;font-weight:700;color:var(--t2);
+  margin-bottom:1rem;text-transform:uppercase;letter-spacing:.05em;
+}
+.qr-dot{width:6px;height:6px;border-radius:50%;background:var(--em);animation:_pulse2 1.5s infinite}
+@keyframes _pulse2{0%,100%{opacity:1}50%{opacity:.25}}
+#qr-canvas{display:flex;justify-content:center;align-items:center;min-height:170px}
+#qr-canvas canvas,#qr-canvas img{border-radius:6px;box-shadow:0 4px 20px rgba(0,0,0,.6);max-width:170px;width:100%}
+.qr-hint{font-size:.66rem;color:var(--t3);margin-top:.85rem;line-height:1.55}
+.qr-timer{
+  display:flex;align-items:center;justify-content:center;gap:.55rem;
+  margin-top:.7rem;font-size:.72rem;color:var(--t3);
+}
+.qr-timer-val{
+  font-family:var(--mono);font-size:.88rem;font-weight:700;color:var(--em);
+  min-width:48px;text-align:center;
+  background:rgba(var(--em-rgb),.08);border:1px solid rgba(var(--em-rgb),.2);
+  border-radius:4px;padding:.15rem .55rem;
+}
+.qr-timer-val.danger{color:var(--red);background:rgba(var(--red-rgb),.08);border-color:rgba(var(--red-rgb),.2)}
+
+/* AMT */
+.amt-box{
+  background:rgba(var(--em-rgb),.06);border:1px solid rgba(var(--em-rgb),.15);
+  border-radius:6px;padding:.75rem .9rem;
+  display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;
+}
+.amt-lbl{font-size:.74rem;color:var(--t2)}
+.amt-val{font-family:var(--mono);font-size:1rem;font-weight:700;color:var(--em)}
+.fee-note{font-size:.62rem;color:var(--t3);text-align:right;margin-bottom:.85rem}
+
+/* POLL */
+.poll-row{display:flex;align-items:center;gap:.55rem;font-size:.72rem;color:var(--t3);padding:.5rem 0}
+.poll-dot{width:7px;height:7px;border-radius:50%;background:var(--yel);animation:_pulse2 1.2s infinite;flex-shrink:0}
+.poll-dot.green{background:var(--em);animation:none}
+.poll-dot.red{background:var(--red);animation:none}
+.poll-dot.grey{background:var(--t3);animation:none}
+
+/* SUCCESS BOX */
+.suc-box{
+  background:rgba(var(--em-rgb),.06);border:1px solid rgba(var(--em-rgb),.18);
+  border-radius:6px;padding:.85rem;margin-top:.65rem;
+}
+.suc-box-title{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--em);margin-bottom:.65rem}
+.suc-row{
+  display:flex;justify-content:space-between;font-size:.74rem;gap:.75rem;
+  padding:.4rem 0;border-bottom:1px solid rgba(var(--em-rgb),.1);
+}
+.suc-row:last-child{border-bottom:none}
+.suc-row span:first-child{color:var(--t3)}
+.suc-row span:last-child{font-weight:600;font-family:var(--mono);font-size:.7rem;text-align:right;word-break:break-all}
+
+/* BUTTONS */
+.btn-full{
+  width:100%;height:42px;border-radius:4px;border:none;
+  font-family:var(--font);font-size:.82rem;font-weight:700;cursor:pointer;
+  transition:all var(--trans);margin-top:.65rem;
+  display:flex;align-items:center;justify-content:center;gap:.45rem;
+}
+.btn-pri{background:#047857;color:#fff}.btn-pri:hover{background:#059669}
+.btn-out{background:transparent;color:var(--t2);border:1px solid var(--line2) !important}.btn-out:hover{border-color:var(--line3) !important;color:var(--t1)}
+
+/* SPINNER */
+.spin{
+  display:inline-block;width:15px;height:15px;flex-shrink:0;
+  border:2px solid rgba(255,255,255,.25);border-top-color:#fff;
+  border-radius:50%;animation:_spin .6s linear infinite;
+}
+.spin-em{border-color:rgba(var(--em-rgb),.2);border-top-color:var(--em)}
+@keyframes _spin{to{transform:rotate(360deg)}}
+
+/* NOTIF */
+.notif{
+  position:fixed;top:1rem;left:50%;transform:translateX(-50%) translateY(-12px);
+  display:flex;align-items:center;gap:.4rem;
+  padding:.5rem .9rem .5rem .65rem;border-radius:4px;font-size:.72rem;font-weight:600;
+  z-index:99999;opacity:0;pointer-events:none;
+  transition:opacity .2s,transform .2s;max-width:min(360px,90vw);
+  backdrop-filter:blur(12px);box-shadow:0 8px 28px rgba(0,0,0,.7);
+}
+.notif.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.notif-ico{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.notif-ico svg{width:9px;height:9px}
+.notif.ok{background:rgba(12,12,14,.97);border:1px solid rgba(var(--em-rgb),.3);color:var(--em)}
+.notif.ok .notif-ico{background:rgba(var(--em-rgb),.15)}
+.notif.err{background:rgba(12,12,14,.97);border:1px solid rgba(var(--red-rgb),.3);color:var(--red)}
+.notif.err .notif-ico{background:rgba(var(--red-rgb),.12)}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--line);padding:.75rem 1rem;
+  text-align:center;background:var(--bg);position:relative;z-index:1;
+}
+footer p{font-size:.58rem;color:var(--t3)}
+footer a{color:var(--em);font-weight:600;text-decoration:none}
+
+/* RESPONSIVE */
+@media(max-width:720px){
+  .tp-layout{grid-template-columns:1fr}
+  .sum-card{position:static}
+  .prod-grid{grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:.5rem}
+}
+@media(max-width:420px){
+  .prod-grid{grid-template-columns:repeat(3,1fr);gap:.4rem}
+  .bslide h2{font-size:1rem}
+  .bslide p{display:none}
+}
+
+button,a,[role=button]{min-height:36px}
+@media(max-width:480px){button,a,[role=button]{min-height:40px}}
+.n-btn,.n-btn *,.back-btn,.cat,.bl-arr,.var-item{min-height:unset!important}
+/* ── HAMBURGER & DRAWER ── */
+.hbg{display:flex;width:32px;height:32px;border-radius:4px;background:var(--bg2);border:1px solid var(--line2);align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;min-height:unset!important}
+.hbg{position:relative}
+.hbg .bar{display:block;position:absolute;width:14px;height:1.5px;background:var(--t2);transition:all .22s;border-radius:2px;left:9px}
+.hbg .bar1{top:11px}.hbg .bar2{top:15.5px}.hbg .bar3{top:20px}
+.hbg.open .bar1{transform:rotate(45deg) translateY(4.5px)}
+.hbg.open .bar2{opacity:0;transform:scaleX(0)}
+.hbg.open .bar3{transform:rotate(-45deg) translateY(-4.5px)}
+.drawer-backdrop{display:none;position:fixed;inset:0;top:0;z-index:98;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;transition:opacity .25s}
+.drawer-backdrop.open{display:block;opacity:1}
+.drawer{position:fixed;top:46px;right:0;bottom:0;z-index:99;width:min(280px,82vw);background:rgba(20,20,20,.98);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-left:1px solid var(--line);flex-direction:column;padding:.75rem .75rem 1.5rem;transform:translateX(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);display:flex;overflow-y:auto}
+.drawer.open{transform:translateX(0)}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem;padding-bottom:.75rem;border-bottom:1px solid var(--line);flex-shrink:0}
+.drawer-title{font-size:.72rem;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.1em}
+.drawer-close{width:28px;height:28px;border-radius:4px;background:var(--bg2);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t2);transition:all .15s;min-height:unset}
+.drawer-close:hover{border-color:var(--line3);color:var(--t1)}
+.drawer-close svg{width:12px;height:12px}
+.dr-link{padding:.65rem .85rem;border-radius:4px;background:transparent;border:1px solid transparent;font-size:.78rem;font-weight:600;color:var(--t2);text-decoration:none;transition:all .15s;display:flex;align-items:center;gap:.55rem;margin-bottom:.2rem;min-height:unset}
+.dr-link:hover{color:var(--t1);background:var(--bg2);border-color:var(--line)}
+.dr-link svg{width:15px;height:15px;opacity:.5;flex-shrink:0}
+.dr-link:hover svg{opacity:.9}
+.dr-link.em{color:var(--em);background:rgba(var(--em-rgb),.07);border-color:rgba(var(--em-rgb),.2);margin-top:auto}
+.dr-link.em:hover{background:rgba(var(--em-rgb),.12)}
+.dr-link.active{color:var(--t1);background:var(--bg2);border-color:var(--line2)}
+.dr-link.active svg{opacity:.9}
+.dr-sep{height:1px;background:var(--line);margin:.4rem 0 .6rem;flex-shrink:0}
+@media(max-width:680px){.n-btn.hide-m{display:none}}
+</style>
+</head>
+<body>
+
+<!-- NOTIF -->
+<div class="notif" id="notif">
+  <div class="notif-ico" id="notif-ico"></div>
+  <span id="notif-msg"></span>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="logo" onclick="navigate('home')">
+      <div class="logo-gem">
+        <img src="/media/logo.jpg" alt="Logo" style="height:26px;width:auto;max-width:60px;object-fit:contain;border-radius:4px;display:block">
+      </div>
+      Kayz Market
+    </a>
+        <div class="nav-r">
+      <a href="/" class="n-btn hide-m">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        Beranda
+      </a>
+      <a href="/track" class="n-btn hide-m">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Track Order
+      </a>
+      <a href="/topup" class="n-btn hide-m">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Top Up
+      </a>
+      <a href="/cpanel" class="n-btn hide-m">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        cPanel
+      </a>
+      <a id="waBtn" href="#" class="n-btn em hide-m" target="_blank" rel="noopener">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        Hubungi CS
+      </a>
+      <button class="hbg" id="hbgBtn" onclick="toggleDrawer()">
+        <span class="bar bar1"></span>
+        <span class="bar bar2"></span>
+        <span class="bar bar3"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleDrawer()"></div>
+
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <span class="drawer-title">Menu</span>
+    <button class="drawer-close" onclick="toggleDrawer()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+  <a href="/" class="dr-link" onclick="toggleDrawer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Home
+  </a>
+  <a href="/topup" class="dr-link active" onclick="toggleDrawer()" style="color:var(--em);border-color:rgba(var(--em-rgb),.2);background:rgba(var(--em-rgb),.06)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    Top Up Game
+  </a>
+  <a href="/otp" class="dr-link" onclick="toggleDrawer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+    Beli OTP
+  </a>
+  <a href="/renew" class="dr-link" onclick="toggleDrawer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+    Perpanjang Panel
+  </a>
+  <a href="/track" class="dr-link" onclick="toggleDrawer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    Track Order
+  </a>
+  <a href="/cpanel" class="dr-link" onclick="toggleDrawer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+    cPanel
+  </a>
+  <div class="dr-sep"></div>
+  <a href="/reseller" class="dr-link" onclick="toggleDrawer()" style="color:var(--em);border-color:rgba(var(--em-rgb),.2);background:rgba(var(--em-rgb),.06)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 2 3 6l9 16 9-16-3-4z"/><path d="M3 6h18"/><path d="m12 2-3 4 3 16 3-16z"/></svg>
+    Buka Toko Reseller
+  </a>
+  <a href="/tiktok" class="dr-link" onclick="toggleDrawer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+    TikTok Downloader
+  </a>
+  <a href="/upload" class="dr-link" onclick="toggleDrawer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+    Upload CDN
+  </a>
+  <a href="/ulasan" class="dr-link" onclick="toggleDrawer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 10h8M8 14h5"/></svg>
+    Ulasan
+  </a>
+  <a href="/chat" class="dr-link" onclick="toggleDrawer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><circle cx="9" cy="10" r=".5" fill="currentColor"/><circle cx="12" cy="10" r=".5" fill="currentColor"/><circle cx="15" cy="10" r=".5" fill="currentColor"/></svg>
+    Live Chat
+  </a>
+  <a href="/playlist" class="dr-link" onclick="toggleDrawer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+    Playlist Musik
+  </a>
+  <div class="dr-sep"></div>
+  <a href="#" id="drawerWa" target="_blank" rel="noopener noreferrer" class="dr-link em" onclick="toggleDrawer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+    Hubungi CS
+  </a>
+  <a href="https://whatsapp.com/channel/0029Vb91qeW17Emm4TVqu53K" target="_blank" rel="noopener" class="dr-link" onclick="toggleDrawer()" style="color:#25d366;border-color:rgba(37,211,102,.2);background:rgba(37,211,102,.06)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+    Channel WhatsApp
+  </a>
+</div>
+
+<!-- ═══════════════════════════ HOME PAGE ═══════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <!-- BANNER -->
+  <div class="banner-wrap">
+    <div class="banner-slides" id="banner-slides">
+      <!-- dinamis dari /api/topup/banners -->
+    </div>
+    <button class="bl-arr bl-prev" onclick="bannerPrev()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg></button>
+    <button class="bl-arr bl-next" onclick="bannerNext()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg></button>
+    <div class="bl-dots" id="bl-dots">
+      <!-- dinamis -->
+    </div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-items" id="ticker-a">
+      <span class="tick-item"><span class="tick-dot"></span>QRIS tersedia</span>
+      <span class="tick-item"><span class="tick-dot"></span>Proses otomatis</span>
+      <span class="tick-item"><span class="tick-dot"></span>Semua e-wallet</span>
+      <span class="tick-item"><span class="tick-dot"></span>Mobile banking</span>
+      <span class="tick-item"><span class="tick-dot"></span>Item langsung masuk</span>
+      <span class="tick-item"><span class="tick-dot"></span>Aman & terpercaya</span>
+      <span class="tick-item"><span class="tick-dot"></span>24/7 aktif</span>
+      <span class="tick-item"><span class="tick-dot"></span>Harga terbaik</span>
+      <span class="tick-item"><span class="tick-dot"></span>Tanpa ribet</span>
+      <span class="tick-item"><span class="tick-dot"></span>GoPay · OVO · DANA · ShopeePay</span>
+    </div>
+    <div class="ticker-items" aria-hidden="true">
+      <span class="tick-item"><span class="tick-dot"></span>QRIS tersedia</span>
+      <span class="tick-item"><span class="tick-dot"></span>Proses otomatis</span>
+      <span class="tick-item"><span class="tick-dot"></span>Semua e-wallet</span>
+      <span class="tick-item"><span class="tick-dot"></span>Mobile banking</span>
+      <span class="tick-item"><span class="tick-dot"></span>Item langsung masuk</span>
+      <span class="tick-item"><span class="tick-dot"></span>Aman & terpercaya</span>
+      <span class="tick-item"><span class="tick-dot"></span>24/7 aktif</span>
+      <span class="tick-item"><span class="tick-dot"></span>Harga terbaik</span>
+      <span class="tick-item"><span class="tick-dot"></span>Tanpa ribet</span>
+      <span class="tick-item"><span class="tick-dot"></span>GoPay · OVO · DANA · ShopeePay</span>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div class="main" id="prod-section">
+    <!-- Filter -->
+    <div class="filter-row">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" placeholder="Cari produk..." id="search-inp" oninput="filterProds(this.value)" autocomplete="off">
+      </div>
+      <div class="cats" id="cats"></div>
+    </div>
+
+    <div class="sec-label" id="prod-label">Semua Produk</div>
+    <div class="prod-grid" id="prod-grid">
+      <!-- Skeleton placeholders -->
+      <div class="skel"><div class="skel-thumb"></div><div class="skel-body"></div></div>
+      <div class="skel" style="animation-delay:.1s"><div class="skel-thumb"></div><div class="skel-body"></div></div>
+      <div class="skel" style="animation-delay:.2s"><div class="skel-thumb"></div><div class="skel-body"></div></div>
+      <div class="skel" style="animation-delay:.3s"><div class="skel-thumb"></div><div class="skel-body"></div></div>
+      <div class="skel" style="animation-delay:.4s"><div class="skel-thumb"></div><div class="skel-body"></div></div>
+      <div class="skel" style="animation-delay:.5s"><div class="skel-thumb"></div><div class="skel-body"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ TOPUP FORM ═══════════════════════════ -->
+<div class="page" id="page-topup">
+  <div class="tp-wrap">
+    <button class="back-btn" onclick="navigate('home')" style="margin-bottom:.85rem">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>
+      Kembali ke Katalog
+    </button>
+    <div class="tp-layout">
+      <!-- LEFT -->
+      <div>
+        <div class="tp-card">
+          <!-- Head -->
+          <div class="tp-head">
+            <div class="tp-prod-thumb" id="tp-thumb">
+              <span class="tp-initial" id="tp-initial">?</span>
+            </div>
+            <div>
+              <div class="tp-prod-name" id="tp-name">Memuat...</div>
+              <div class="tp-prod-code" id="tp-code"></div>
+            </div>
+          </div>
+          <!-- Step 1 -->
+          <div class="tp-sec">
+            <div class="tp-sec-lbl"><span class="tp-sec-num">1</span> Data Akun</div>
+            <div id="id-inputs"></div>
+          </div>
+          <!-- Step 2 -->
+          <div class="tp-sec">
+            <div class="tp-sec-lbl"><span class="tp-sec-num">2</span> Pilih Nominal</div>
+            <div id="var-area">
+              <div style="text-align:center;padding:1.5rem;color:var(--t3)">
+                <div class="spin spin-em" style="margin:0 auto .65rem"></div>
+                <div style="font-size:.76rem">Memuat nominal...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- RIGHT -->
+      <div>
+        <div class="sum-card">
+          <div class="sum-head">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--em)" stroke-width="2" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <span class="sum-head-title">Ringkasan Order</span>
+          </div>
+          <div class="sum-body">
+            <div class="sum-ph" id="sum-ph">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="9" y="11" width="13" height="13" rx="2"/><path d="M5 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1"/></svg>
+              Isi data akun dan pilih nominal untuk melanjutkan.
+            </div>
+            <div id="sum-det" style="display:none">
+              <div class="sum-row"><span class="sum-lbl">Produk</span><span class="sum-val" id="s-prod"></span></div>
+              <div id="s-id-rows"></div>
+              <div class="sum-row"><span class="sum-lbl">Nominal</span><span class="sum-val" id="s-var"></span></div>
+              <div class="sum-row"><span class="sum-lbl">Bayar via</span><span class="sum-val" style="color:var(--em)">QRIS</span></div>
+              <div class="sum-total">
+                <span class="sum-total-lbl">Total Bayar</span>
+                <span class="sum-total-val" id="s-total">—</span>
+              </div>
+            </div>
+            <button class="btn-checkout" id="btn-co" disabled onclick="doCheckout()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h.01M18 14h.01M14 18h.01M18 18h.01M14 21h.01M18 21h.01M21 14h.01M21 18h.01"/></svg>
+              Lanjut ke Pembayaran QRIS
+            </button>
+            <div class="qris-badge">
+              <div class="qris-badge-ico">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h.01M18 14h.01M14 18h.01M18 18h.01M14 21h.01M18 21h.01M21 14h.01M21 18h.01"/></svg>
+              </div>
+              <div class="qris-badge-text">
+                <p>Bayar dengan QRIS</p>
+                <span>GoPay · OVO · DANA · ShopeePay · Bank manapun</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ PAYMENT PAGE ═══════════════════════════ -->
+<div class="page" id="page-payment">
+  <div style="max-width:420px;margin:0 auto;padding:1rem 1rem 0;position:relative;z-index:1">
+    <button class="back-btn" onclick="cancelPay()" style="margin-bottom:.75rem">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>
+      Batalkan & kembali
+    </button>
+  </div>
+  <div class="pay-wrap" style="padding-top:0">
+    <div class="pay-card">
+      <div class="pay-head">
+        <div class="pay-st-ico waiting" id="p-st-ico">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div>
+          <div class="pay-st-title" id="p-st-title">Menunggu Pembayaran</div>
+          <div class="pay-st-sub" id="p-st-sub">Scan QRIS di bawah untuk membayar</div>
+        </div>
+      </div>
+      <div class="pay-body">
+        <!-- QR -->
+        <div class="qr-box" id="qr-section">
+          <div class="qr-label"><span class="qr-dot"></span>QRIS — Semua E-Wallet & Bank</div>
+          <div id="qr-canvas"><div class="spin spin-em" style="margin:0 auto"></div></div>
+          <div class="qr-hint">Scan dengan GoPay, OVO, DANA, ShopeePay,<br>atau aplikasi mobile banking manapun</div>
+          <div class="qr-timer" id="qr-timer-wrap">
+            <span style="font-size:.66rem">Kadaluarsa dalam</span>
+            <span class="qr-timer-val" id="qr-timer">--:--</span>
+          </div>
+        </div>
+        <!-- Amount -->
+        <div class="amt-box">
+          <span class="amt-lbl">Total Pembayaran</span>
+          <span class="amt-val" id="p-amount">—</span>
+        </div>
+        <div class="fee-note" id="p-fee"></div>
+        <!-- Poll -->
+        <div class="poll-row">
+          <span class="poll-dot" id="p-dot"></span>
+          <span id="p-poll-text">Menunggu konfirmasi pembayaran...</span>
+        </div>
+        <!-- Success -->
+        <div id="p-suc" style="display:none"></div>
+        <!-- Actions -->
+        <button class="btn-full btn-pri" id="p-btn-next" style="display:none" onclick="navigate('home')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Top Up Lagi
+        </button>
+        <button class="btn-full btn-out" id="p-btn-cancel" onclick="cancelPay()">Batalkan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 <a href="/">Kayz Market</a> — Top Up instan dengan QRIS · Kayz Market Payment</p>
+</footer>
+
+<script>
+function toggleDrawer() {
+  var d = document.getElementById('drawer');
+  var b = document.getElementById('drawerBackdrop');
+  var h = document.getElementById('hbgBtn');
+  var open = d.classList.toggle('open');
+  if (b) {
+    if (open) { b.style.display = 'block'; requestAnimationFrame(function(){ b.classList.add('open'); }); }
+    else { b.classList.remove('open'); setTimeout(function(){ b.style.display = 'none'; }, 260); }
+  }
+  if (h) h.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    var d = document.getElementById('drawer');
+    if (d && d.classList.contains('open')) toggleDrawer();
+  }
+});
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let allProds = [], curProd = null, curVars = [], selVar = null;
+let pollTimer = null, timerInterval = null, curOrderId = null;
+let bannerIdx = 0, bannerAuto = null;
+let activeCat = 'all';
+let _topupOverrides = {}; // { CODE: { image, displayName } }
+
+// ══════════════════════════════════════════
+// NAVIGATE
+// ══════════════════════════════════════════
+function navigate(p) {
+  if (p !== 'payment') {
+    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  }
+  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+  document.getElementById('page-' + p).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════════
+// NOTIFY
+// ══════════════════════════════════════════
+let notifT;
+function toast(msg, type = 'ok') {
+  const n = document.getElementById('notif');
+  const ico = document.getElementById('notif-ico');
+  const m = document.getElementById('notif-msg');
+  n.className = `notif ${type}`;
+  m.textContent = msg;
+  ico.innerHTML = type === 'ok'
+    ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>`
+    : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+  n.classList.add('show');
+  clearTimeout(notifT);
+  notifT = setTimeout(() => n.classList.remove('show'), 3200);
+}
+
+// ══════════════════════════════════════════
+// BANNER (Dynamic)
+// ══════════════════════════════════════════
+let BANNER_COUNT = 3;
+const DEFAULT_BANNERS = [
+  { tag:'QRIS · Proses Otomatis', title:'Top Up Game<br><strong>Instan & Aman</strong>', desc:'Scan QRIS dari e-wallet atau mobile banking manapun. Item langsung masuk dalam hitungan detik.', btnText:'Lihat Produk' },
+  { tag:'HARGA TERBAIK', title:'Harga Kompetitif<br><strong>Langsung Distributor</strong>', desc:'Tanpa biaya tersembunyi. Harga yang kamu lihat adalah harga yang kamu bayar.', btnText:'Top Up Sekarang' },
+  { tag:'24/7 AKTIF', title:'Layanan Aktif<br><strong>Non-Stop 24 Jam</strong>', desc:'Server berjalan sepanjang waktu. Top up kapanpun kamu mau, hari atau malam.', btnText:'Mulai Top Up' },
+];
+
+function renderBanners(list) {
+  const slides = document.getElementById('banner-slides');
+  const dots   = document.getElementById('bl-dots');
+  if (!slides || !dots) return;
+  slides.innerHTML = list.map(function(b) {
+    var style = b.image ? `background-image:url('${b.image}');background-size:cover;background-position:center` : '';
+    return `<div class="bslide" style="${style}">
+      ${b.image ? `<div style="position:absolute;inset:0;background:rgba(0,0,0,.5)"></div>` : ''}
+      <div class="bslide-body" style="position:relative">
+        ${b.tag ? `<div class="bslide-tag">${b.tag}</div>` : ''}
+        ${b.title ? `<h2>${b.title}</h2>` : ''}
+        ${b.desc  ? `<p>${b.desc}</p>` : ''}
+        ${b.btnText ? (b.btnUrl
+          ? `<a class="bslide-btn" href="${b.btnUrl.replace(/"/g,'&quot;')}" target="_blank" rel="noopener noreferrer">${b.btnText}<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg></a>`
+          : `<button class="bslide-btn" onclick="document.getElementById('prod-section').scrollIntoView({behavior:'smooth'})">${b.btnText}<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg></button>`)
+          : ''}
+      </div>
+    </div>`;
+  }).join('');
+  dots.innerHTML = list.map(function(_, i) {
+    return `<div class="bl-dot${i===0?' on':''}" onclick="bannerGo(${i})"></div>`;
+  }).join('');
+  BANNER_COUNT = list.length;
+  bannerIdx = 0;
+}
+
+async function loadBanners() {
+  try {
+    const r = await fetch('/api/topup/banners');
+    const j = await r.json();
+    const list = (j.ok && j.data && j.data.length) ? j.data : DEFAULT_BANNERS;
+    renderBanners(list);
+  } catch(e) {
+    renderBanners(DEFAULT_BANNERS);
+  }
+}
+
+function bannerGo(i) {
+  bannerIdx = i;
+  document.getElementById('banner-slides').style.transform = `translateX(-${i * 100}%)`;
+  document.querySelectorAll('.bl-dot').forEach((d, j) => d.classList.toggle('on', j === i));
+}
+function bannerNext() { bannerGo((bannerIdx + 1) % BANNER_COUNT); }
+function bannerPrev() { bannerGo((bannerIdx - 1 + BANNER_COUNT) % BANNER_COUNT); }
+bannerAuto = setInterval(bannerNext, 5000);
+
+// ══════════════════════════════════════════
+// FORMAT
+// ══════════════════════════════════════════
+const fmt = n => 'Rp ' + Number(n).toLocaleString('id-ID');
+
+// ══════════════════════════════════════════
+// LOAD PRODUCTS
+// ══════════════════════════════════════════
+async function loadProducts() {
+  try {
+    const [prodRes, ovRes, imgRes] = await Promise.all([
+      fetch('/api/topup/products'),
+      fetch('/api/topup/overrides').catch(() => null),
+      fetch('/api/topup/product-images').catch(() => null),
+    ]);
+    const data = await prodRes.json();
+    allProds = data?.data ?? [];
+    // Merge overrides
+    if (ovRes && ovRes.ok) {
+      try { const oj = await ovRes.json(); _topupOverrides = (oj.ok && oj.data) ? oj.data : {}; } catch(e) {}
+    }
+    // Merge product images (foto yang diupload admin) ke _topupOverrides
+    if (imgRes && imgRes.ok) {
+      try {
+        const ij = await imgRes.json();
+        if (ij.ok && ij.data && typeof ij.data === 'object') {
+          Object.entries(ij.data).forEach(([code, imgUrl]) => {
+            if (imgUrl) {
+              _topupOverrides[code] = Object.assign({}, _topupOverrides[code] || {}, { image: imgUrl });
+            }
+          });
+        }
+      } catch(e) {}
+    }
+    buildCats(allProds);
+    renderProds(allProds);
+  } catch (e) {
+    document.getElementById('prod-grid').innerHTML =
+      `<div class="empty-grid">Gagal memuat produk. Pastikan server berjalan lalu refresh halaman.</div>`;
+  }
+}
+
+// ══════════════════════════════════════════
+// CATEGORIES
+// ══════════════════════════════════════════
+function buildCats(list) {
+  // Extract unique categories from product names (simple heuristic)
+  const cats = new Set();
+  list.forEach(p => {
+    if (p.category) cats.add(p.category);
+  });
+  const catsEl = document.getElementById('cats');
+  let html = `<button class="cat on" onclick="setCat('all',this)">Semua</button>`;
+  cats.forEach(c => {
+    html += `<button class="cat" onclick="setCat('${c}',this)">${c}</button>`;
+  });
+  catsEl.innerHTML = html;
+}
+
+function setCat(cat, el) {
+  activeCat = cat;
+  document.querySelectorAll('.cat').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+  filterProds(document.getElementById('search-inp').value);
+}
+
+function filterProds(q) {
+  const l = q.toLowerCase();
+  let list = l
+    ? allProds.filter(p => p.name.toLowerCase().includes(l) || p.code.toLowerCase().includes(l))
+    : allProds;
+  if (activeCat !== 'all') list = list.filter(p => p.category === activeCat);
+  document.getElementById('prod-label').textContent =
+    list.length ? `${list.length} Produk${activeCat !== 'all' ? ' · ' + activeCat : ''}` : 'Tidak Ada Produk';
+  renderProds(list);
+}
+
+// ══════════════════════════════════════════
+// RENDER PRODUCTS — 1:1 SQUARE CARDS
+// ══════════════════════════════════════════
+// Gradient palettes for placeholder backgrounds
+const GRAD_PALETTES = [
+  ['#0f2027','#203a43','#2c5364'],
+  ['#1a1a2e','#16213e','#0f3460'],
+  ['#141e30','#243b55','#2c5282'],
+  ['#1d2b1d','#2d4a2d','#1a6b3a'],
+  ['#2a1533','#4a1253','#6d1e7a'],
+  ['#1a0a00','#3d1a00','#6b3300'],
+  ['#000428','#004e92','#2980b9'],
+  ['#0d0d0d','#1a1a1a','#2e2e2e'],
+];
+
+function prodGradient(code) {
+  const idx = code.split('').reduce((a, c) => a + c.charCodeAt(0), 0) % GRAD_PALETTES.length;
+  const [c1, c2, c3] = GRAD_PALETTES[idx];
+  return `linear-gradient(135deg,${c1} 0%,${c2} 55%,${c3} 100%)`;
+}
+
+function renderProds(list) {
+  const g = document.getElementById('prod-grid');
+  if (!list.length) {
+    g.innerHTML = `<div class="empty-grid">Produk tidak ditemukan.</div>`;
+    return;
+  }
+  g.innerHTML = list.map((p, i) => {
+    // Cek override gambar dari admin
+    const ov = _topupOverrides[p.code] || {};
+    const hasImg = ov.image || p.image || p.banner || p.thumbnail;
+    const imgUrl = ov.image || p.image || p.banner || p.thumbnail || '';
+    const displayName = ov.displayName || p.name || p.code || '?';
+    const initial = displayName[0].toUpperCase();
+    const grad = prodGradient(p.code || p.name || String(i));
+    const delay = Math.min(i * 0.04, 0.5);
+
+    return `<div class="prod-card${!p.isActive ? ' inactive' : ''}" onclick="${p.isActive ? `openTP('${p.code}')` : ''}" style="animation-delay:${delay}s">
+      <div class="prod-thumb">
+        <div class="prod-thumb-inner" style="${!hasImg ? `background:${grad}` : ''}">
+          ${hasImg
+            ? `<img src="${imgUrl}" alt="${displayName}" onerror="this.parentElement.style.background='${grad}';this.style.display='none';this.parentElement.insertAdjacentHTML('beforeend','<div class=\\'prod-thumb-placeholder\\'>${initial}</div>')">`
+            : `<div class="prod-thumb-placeholder">${initial}</div>`}
+        </div>
+        <div class="prod-badge ${p.isActive ? '' : 'off'}">${p.isActive ? 'Tersedia' : 'Nonaktif'}</div>
+      </div>
+      <div class="prod-body">
+        <div class="prod-name">${displayName}</div>
+        <div class="prod-code">${p.code}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// OPEN TOPUP FORM
+// ══════════════════════════════════════════
+async function openTP(code) {
+  curProd = allProds.find(p => p.code === code) || { code, name: code, inputs: [] };
+  selVar = null;
+  navigate('topup');
+
+  // Cek override admin
+  const ov = _topupOverrides[code] || {};
+  const displayName = ov.displayName || curProd.name || code;
+
+  // Head
+  document.getElementById('tp-name').textContent = displayName;
+  document.getElementById('tp-code').textContent = curProd.code;
+  const thumb = document.getElementById('tp-thumb');
+  const initial = document.getElementById('tp-initial');
+  const hasImg = ov.image || curProd.image || curProd.banner || curProd.thumbnail;
+  if (hasImg) {
+    thumb.innerHTML = `<img src="${hasImg}" alt="${displayName}" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\\'tp-initial\\'>${displayName[0].toUpperCase()}</span>'">`;
+  } else {
+    initial.textContent = displayName[0].toUpperCase();
+  }
+
+  // Inputs
+  const defs = curProd.inputs?.length
+    ? curProd.inputs
+    : [{ name: 'id', title: 'User ID' }, { name: 'server', title: 'Server ID' }];
+  document.getElementById('id-inputs').innerHTML = defs.map(inp => `
+    <div class="inp-group">
+      <label class="inp-label" for="if-${inp.name}">${inp.title || inp.name}</label>
+      ${inp.type === 'select' && inp.options?.length
+        ? `<select class="f-inp f-sel" id="if-${inp.name}" onchange="updSum()">
+            <option value="">— Pilih ${inp.title || inp.name} —</option>
+            ${inp.options.map(o => `<option value="${o.value}">${o.title}</option>`).join('')}
+           </select>`
+        : `<input class="f-inp" id="if-${inp.name}" type="text" placeholder="Masukkan ${inp.title || inp.name}" oninput="updSum()">`}
+      ${inp.name === 'id' ? `<div class="inp-hint">Cek User ID di profil game kamu.</div>` : ''}
+    </div>`).join('');
+
+  // Variants
+  document.getElementById('var-area').innerHTML = `
+    <div style="text-align:center;padding:1.5rem;color:var(--t3)">
+      <div class="spin spin-em" style="margin:0 auto .6rem"></div>
+      <div style="font-size:.76rem">Memuat nominal...</div>
+    </div>`;
+
+  try {
+    const r = await fetch(`/api/topup/variants/${code}`);
+    const data = await r.json();
+    curVars = (data?.data ?? []).filter(v => v.isActive);
+    if (!curVars.length) {
+      document.getElementById('var-area').innerHTML =
+        `<div style="color:var(--red);font-size:.8rem;padding:.5rem 0">Tidak ada nominal tersedia saat ini.</div>`;
+      return;
+    }
+    document.getElementById('var-area').innerHTML =
+      `<div class="var-grid">${curVars.map((v, i) =>
+        `<div class="var-item" id="vi-${i}" onclick="selVariant(${i})">
+          <div class="var-name">${v.name}</div>
+          <div class="var-price">${fmt(v.price)}</div>
+        </div>`).join('')}</div>`;
+  } catch {
+    document.getElementById('var-area').innerHTML =
+      `<div style="color:var(--red);font-size:.8rem">Gagal memuat nominal. Coba lagi.</div>`;
+  }
+  resetSum();
+}
+
+function selVariant(i) {
+  document.querySelectorAll('.var-item').forEach((e, j) => e.classList.toggle('selected', i === j));
+  selVar = curVars[i];
+  updSum();
+}
+
+function getInputs() {
+  const defs = curProd?.inputs?.length
+    ? curProd.inputs
+    : [{ name: 'id', title: 'User ID' }, { name: 'server', title: 'Server ID' }];
+  const vals = {}; let ok = true;
+  defs.forEach(inp => {
+    const el = document.getElementById('if-' + inp.name);
+    vals[inp.name] = el ? el.value.trim() : '';
+    if (!vals[inp.name]) ok = false;
+  });
+  return { defs, vals, ok };
+}
+
+function updSum() {
+  const { defs, vals, ok } = getInputs();
+  const ready = ok && selVar;
+  document.getElementById('sum-ph').style.display = ready ? 'none' : 'block';
+  document.getElementById('sum-det').style.display = ready ? 'block' : 'none';
+  document.getElementById('btn-co').disabled = !ready;
+  if (!ready) return;
+  document.getElementById('s-prod').textContent = curProd.name;
+  document.getElementById('s-id-rows').innerHTML = defs.map(inp =>
+    `<div class="sum-row"><span class="sum-lbl">${inp.title || inp.name}</span><span class="sum-val">${vals[inp.name] || '—'}</span></div>`).join('');
+  document.getElementById('s-var').textContent = selVar.name;
+  document.getElementById('s-total').textContent = fmt(selVar.price);
+}
+
+function resetSum() {
+  document.getElementById('sum-ph').style.display = 'block';
+  document.getElementById('sum-det').style.display = 'none';
+  document.getElementById('btn-co').disabled = true;
+}
+
+// ══════════════════════════════════════════
+// CHECKOUT
+// ══════════════════════════════════════════
+async function doCheckout() {
+  const { defs, vals, ok } = getInputs();
+  if (!ok || !selVar) return;
+
+  const btn = document.getElementById('btn-co');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spin"></div>  Membuat QRIS...';
+
+  const inputs = defs.map(inp => ({ name: inp.name, value: vals[inp.name] }));
+  try {
+    const r = await fetch('/api/topup/pay', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        productCode: curProd.code,
+        variantCode: selVar.code,
+        qty: 1,
+        inputs,
+        variantName: selVar.name,
+        amount: selVar.price,
+      }),
+    });
+    const data = await r.json();
+    if (data.error || !data.ok) {
+      toast(data.message || 'Gagal membuat QRIS.', 'err');
+      btn.disabled = false;
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg> Lanjut ke Pembayaran QRIS';
+      return;
+    }
+    window.location.href = '/paytopup?orderId=' + encodeURIComponent(data.orderId);
+  } catch (e) {
+    toast('Error: ' + e.message, 'err');
+    btn.disabled = false;
+    btn.innerHTML = 'Lanjut ke Pembayaran QRIS';
+  }
+}
+
+// ══════════════════════════════════════════
+// PAYMENT PAGE
+// ══════════════════════════════════════════
+function showPayPage(data) {
+  setPayStatus('waiting');
+  document.getElementById('p-amount').textContent = fmt(data.totalAmount || selVar?.price);
+  document.getElementById('p-fee').textContent = data.fee
+    ? `Sudah termasuk biaya layanan Rp ${Number(data.fee).toLocaleString('id-ID')}`
+    : '';
+  document.getElementById('p-dot').className = 'poll-dot';
+  document.getElementById('p-poll-text').textContent = 'Menunggu konfirmasi pembayaran...';
+  document.getElementById('p-suc').style.display = 'none';
+  document.getElementById('p-btn-next').style.display = 'none';
+  document.getElementById('p-btn-cancel').style.display = 'flex';
+  document.getElementById('p-btn-cancel').textContent = 'Batalkan';
+  document.getElementById('qr-section').style.display = 'block';
+
+  // Generate QR
+  const qrDiv = document.getElementById('qr-canvas');
+  qrDiv.innerHTML = '';
+  const _qrText = data.qrString || data.qrBase64 || '';
+  if (_qrText.startsWith('data:image/')) {
+    // Backend sudah kirim base64 image langsung — tampilkan sebagai <img>
+    const img = document.createElement('img');
+    img.src = _qrText;
+    img.alt = 'QRIS';
+    qrDiv.appendChild(img);
+  } else if (_qrText) {
+    // Backend kirim QRIS string — generate QR di browser
+    new QRCode(qrDiv, {
+      text: _qrText,
+      width: 170, height: 170,
+      colorDark: '#e5e5e5', colorLight: '#212121',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  } else {
+    qrDiv.innerHTML = '<p style="color:#f87171;font-size:12px;text-align:center">Gagal memuat QRIS.<br>Hubungi admin.</p>';
+  }
+
+  if (data.expiredAt || data.expiryAt) startTimer(new Date(data.expiredAt || data.expiryAt));
+  navigate('payment');
+  startPoll();
+}
+
+function setPayStatus(s) {
+  const ico = document.getElementById('p-st-ico');
+  const title = document.getElementById('p-st-title');
+  const sub = document.getElementById('p-st-sub');
+  ico.className = `pay-st-ico ${s}`;
+  if (s === 'waiting') {
+    ico.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+    title.textContent = 'Menunggu Pembayaran'; sub.textContent = 'Scan QRIS di bawah untuk membayar';
+  } else if (s === 'processing') {
+    ico.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38"/></svg>`;
+    title.textContent = 'Memproses Order'; sub.textContent = 'Pembayaran diterima, mengirim item...';
+  } else if (s === 'success') {
+    ico.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+    title.textContent = 'Pembayaran Berhasil'; sub.textContent = 'Item sudah dikirim ke akunmu!';
+  } else if (s === 'expired') {
+    ico.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#616161" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+    title.textContent = 'QRIS Kadaluarsa'; sub.textContent = 'Silakan buat order baru';
+  } else {
+    ico.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+    title.textContent = 'Order Gagal'; sub.textContent = 'Silakan coba kembali';
+  }
+}
+
+function startTimer(expiredAt) {
+  if (timerInterval) clearInterval(timerInterval);
+  const tw = document.getElementById('qr-timer-wrap');
+  const tv = document.getElementById('qr-timer');
+  tw.style.display = 'flex';
+  timerInterval = setInterval(() => {
+    const left = Math.max(0, Math.floor((expiredAt - Date.now()) / 1000));
+    const m = Math.floor(left / 60).toString().padStart(2, '0');
+    const s = (left % 60).toString().padStart(2, '0');
+    tv.textContent = `${m}:${s}`;
+    tv.className = 'qr-timer-val' + (left <= 60 ? ' danger' : '');
+    if (left === 0) { clearInterval(timerInterval); timerInterval = null; }
+  }, 1000);
+}
+
+function cancelPay() {
+  if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  navigate('home');
+}
+
+// ══════════════════════════════════════════
+// POLLING
+// ══════════════════════════════════════════
+function startPoll() {
+  if (pollTimer) clearInterval(pollTimer);
+  checkStatus();
+  pollTimer = setInterval(checkStatus, 4000);
+}
+
+async function checkStatus() {
+  if (!curOrderId) return;
+  try {
+    const r = await fetch('/api/topup/pay/status/' + curOrderId);
+    const data = await r.json();
+
+    if (data.status === 'SUCCESS') {
+      clearInterval(pollTimer); pollTimer = null;
+      if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+      setPayStatus('success');
+      document.getElementById('p-dot').className = 'poll-dot green';
+      document.getElementById('p-poll-text').textContent = 'Pembayaran berhasil! Item sedang dikirim.';
+      document.getElementById('qr-section').style.display = 'none';
+      document.getElementById('p-suc').style.display = 'block';
+      document.getElementById('p-suc').innerHTML = `
+        <div class="suc-box">
+          <div class="suc-box-title">✓ Detail Transaksi</div>
+          <div class="suc-row"><span>Invoice</span><span>${data.orderInvoice || '—'}</span></div>
+          <div class="suc-row"><span>Produk</span><span>${data.productCode || '—'}</span></div>
+          <div class="suc-row"><span>Nominal</span><span>${data.variantName || '—'}</span></div>
+          <div class="suc-row"><span>Status</span><span style="color:var(--em)">${data.statusDesc || 'Berhasil'}</span></div>
+        </div>`;
+      document.getElementById('p-btn-next').style.display = 'flex';
+      document.getElementById('p-btn-next').textContent = '⭐ Top Up Lagi';
+      document.getElementById('p-btn-cancel').style.display = 'none';
+      toast('Transaksi berhasil! Item segera masuk.', 'ok');
+
+    } else if (data.status === 'FAILED') {
+      clearInterval(pollTimer); pollTimer = null;
+      setPayStatus('failed');
+      document.getElementById('p-dot').className = 'poll-dot red';
+      document.getElementById('p-poll-text').textContent = data.message || 'Order gagal diproses.';
+      document.getElementById('p-btn-next').style.display = 'flex';
+      document.getElementById('p-btn-next').textContent = 'Coba Lagi';
+      document.getElementById('p-btn-cancel').style.display = 'none';
+      toast(data.message || 'Order gagal.', 'err');
+
+    } else if (data.status === 'PROCESSING') {
+      setPayStatus('processing');
+      document.getElementById('qr-section').style.display = 'none';
+      document.getElementById('p-dot').className = 'poll-dot green';
+      document.getElementById('p-poll-text').textContent = 'Pembayaran diterima. Memproses ordermu...';
+
+    } else if (data.status === 'EXPIRED') {
+      clearInterval(pollTimer); pollTimer = null;
+      setPayStatus('expired');
+      document.getElementById('p-dot').className = 'poll-dot grey';
+      document.getElementById('p-poll-text').textContent = 'QRIS sudah kadaluarsa.';
+      document.getElementById('qr-section').style.display = 'none';
+      document.getElementById('p-btn-next').style.display = 'flex';
+      document.getElementById('p-btn-next').textContent = 'Buat Order Baru';
+      document.getElementById('p-btn-cancel').style.display = 'none';
+    }
+  } catch { /* network hiccup — keep polling */ }
+}
+
+// ══════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════
+loadBanners();
+loadProducts();
+</script>
+</body>
+</html>
